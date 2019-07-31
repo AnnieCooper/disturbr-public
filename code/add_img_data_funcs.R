@@ -22,7 +22,7 @@ split_data <- function(data, plot_data, num_splits = 100) {
   # split data table to more efficiently calculate slopes
   # add index to img_data(single long/lat), join with larger dataset, then subset
   split_len <- round(nrow(plot_data) / num_splits)
-  plot_data$splits <- rep(seq(1, num_splits), each = split_len)
+  plot_data$splits <- rep(seq(1, num_splits), each = split_len, len = nrow(plot_data))
   data <- plot_data[data, .(longitude, latitude, year, ind, splits), on = c('longitude', 'latitude')]
   
   list_splits <- split(data, by = 'splits')

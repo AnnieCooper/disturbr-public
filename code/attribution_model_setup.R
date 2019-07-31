@@ -1,11 +1,12 @@
 attribution_model_setup <- function(training_blocks, n_blocks, sceneid,
-                                    model_type, data_path, output_path, code_path) {
+                                    model_type, data_path, output_path, code_path, start_year, end_year) {
   
   # initialize lists
   training_points <- list()
-  mod_data_spat <- paste('/importance/attribution_model_importance_spatial_', sceneid, '.csv', sep = '')
+  mod_data_spat <- paste('/importance/attribution_model_importance_spatial_', sceneid, '_', start_year, '_', end_year, '.csv', sep = '')
   mod_data_temp <- paste('/importance/attribution_model_importance_temporal_', sceneid, '.csv', sep = '')
   all_img_vars <- list()
+  model_img_vars <- list()
   fill_image <- list()
   output_class_raster <- list()
   output_date_raster <- list()
@@ -21,11 +22,12 @@ attribution_model_setup <- function(training_blocks, n_blocks, sceneid,
     i <- 1
     # all file names
     while (i <= n_blocks) {
-      all_img_vars[[i]] <- paste('complete_img_with_attvars_spatial_', sceneid, '_block', i, '.csv', sep = '')
-      fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_block', i, '.tif', sep = '')
-      output_class_raster[[i]] <- paste('/attribution/disturbance_class_img_spatial_', sceneid, '_block', i, '.tif', sep = '')
-      output_date_raster[[i]] <- paste('/attribution/disturbance_date_img_spatial_', sceneid, '_block', i, '.tif', sep = '')
-      classified_data[[i]] <- paste('/attribution/classified_img_data_spatial_', sceneid, '_block', i, '.csv', sep = '')
+      all_img_vars[[i]] <- paste('complete_img_with_attvars_spatial_', sceneid, '_block', i, '_', start_year, '_', end_year, '.csv', sep = '')
+      model_img_vars[[i]] <- paste('complete_img_with_attvars_spatial_', sceneid, '_block', i, '_2000_2016.csv', sep = '')
+      fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_', start_year, '_', end_year, '_block', i, '.tif', sep = '')
+      output_class_raster[[i]] <- paste('/attribution/disturbance_class_img_spatial_', sceneid, '_block', i, '_', start_year, '_', end_year, '.tif', sep = '')
+      output_date_raster[[i]] <- paste('/attribution/disturbance_date_img_spatial_', sceneid, '_block', i, '_', start_year, '_', end_year, '.tif', sep = '')
+      classified_data[[i]] <- paste('/attribution/classified_img_data_spatial_', sceneid, '_block', i, '_', start_year, '_', end_year, '.csv', sep = '')
       i <- i + 1
     }
   } else {
@@ -38,11 +40,11 @@ attribution_model_setup <- function(training_blocks, n_blocks, sceneid,
     i <- 1
     # all file names
     while (i <= n_blocks) {
-      all_img_vars[[i]] <- paste('complete_img_with_attvars_temporal_', sceneid, '_block', i, '.csv', sep = '')
-      fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_block', i, '.tif', sep = '')
-      output_class_raster[[i]] <- paste('/attribution/disturbance_class_img_temporal_', sceneid, '_block', i, '.tif', sep = '')
-      output_date_raster[[i]] <- paste('/attribution/disturbance_date_img_temporal_', sceneid, '_block', i, '.tif', sep = '')
-      classified_data[[i]] <- paste('/attribution/classified_img_data_temporal_', sceneid, '_block', i, '.csv', sep = '')
+      all_img_vars[[i]] <- paste('complete_img_with_attvars_temporal_', sceneid, '_block', i, '_', start_year, '_', end_year, '.csv', sep = '')
+      fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_', start_year, '_', end_year, '_block', i, '.tif', sep = '')
+      output_class_raster[[i]] <- paste('/attribution/disturbance_class_img_temporal_', sceneid, '_block', i, '_', start_year, '_', end_year, '.tif', sep = '')
+      output_date_raster[[i]] <- paste('/attribution/disturbance_date_img_temporal_', sceneid, '_block', i, '_', start_year, '_', end_year, '.tif', sep = '')
+      classified_data[[i]] <- paste('/attribution/classified_img_data_temporal_', sceneid, '_block', i, '_', start_year, '_', end_year, '.csv', sep = '')
       i <- i + 1
     }
   }
@@ -72,7 +74,7 @@ attribution_model_setup <- function(training_blocks, n_blocks, sceneid,
   # variables for all img points (training blocks)
   i <- 1
   while (i <= length(training_blocks)) {
-    temp <- fread(paste(output_path, 'image_vars/', sceneid, '/', all_img_vars[as.numeric(training_blocks[i])], sep = ''))
+    temp <- fread(paste(output_path, 'image_vars/', sceneid, '/', model_img_vars[as.numeric(training_blocks[i])], sep = ''))
     temp$longitude <- signif(temp$longitude, digits = 10)
     temp$latitude <- signif(temp$latitude, digits = 10)
     temp <- temp[, splits := NULL]

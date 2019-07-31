@@ -1,7 +1,7 @@
 classify_points <- function(data_path, img_file, img_data, var_data = NULL, training_points, 
                             prev_training = NULL, prev_add = FALSE,
                             index_name, type = 'detection', start_yr, end_yr, valid_values = c(0, 1, 2), sample_num, 
-                            restart = FALSE, start_ind = 1, remove_bad = TRUE) {
+                            restart = FALSE, start_ind = 1, remove_bad = TRUE, api_key) {
   ## 'type' represents the model that you are training data for. There are two options: 'detection' or 'attribution'
   ## 'var_data' is only applicable for the attribution training. It should be left NULL for detection training.
   
@@ -46,11 +46,12 @@ classify_points <- function(data_path, img_file, img_data, var_data = NULL, trai
     lon_lat_data <- pred_data
   }
   
+  if (type == 'detection') {
+    # figure out .01% of data
+    lon_lat_data <- all_data[ , .(avg_index = mean(ind)), by = c('longitude', 'latitude')]
+  }
+  
   if (prev_add == TRUE) {
-    if (type == 'detection') {
-      # figure out .01% of data
-      lon_lat_data <- all_data[ , .(avg_index = mean(ind)), by = c('longitude', 'latitude')]
-    }
     
     # add in previously-classified points
     if (type == 'attribution') {
@@ -71,21 +72,21 @@ classify_points <- function(data_path, img_file, img_data, var_data = NULL, trai
         extra_data$disturbance <- det_training$disturbance[-null_train]
       } 
     }
+  }
     
-    try(if(missing(sample_num)) sample_num <- round(nrow(lon_lat_data) / div))
-    s_size <- sample_num
-    print(paste('Sample size is ', s_size, '.', sep = ''))
-    
-    # get coordinates of sample points
-    if (type == 'detection') {set.seed(275)}
-    if (type == 'attribution') {
-      set.seed(5320)
-      # remove points that have been sampled previously
-      lon_lat_data <- lon_lat_data[-unlist(extras),]
-    }
-    samp_pts <- sample(seq(1, nrow(lon_lat_data)), s_size, replace = F)
-    samp_pts <- lon_lat_data[samp_pts, ]
-  } 
+  try(if(missing(sample_num)) sample_num <- round(nrow(lon_lat_data) / div))
+  s_size <- sample_num
+  print(paste('Sample size is ', s_size, '.', sep = ''))
+  
+  # get coordinates of sample points
+  if (type == 'detection') {set.seed(275)}
+  if (type == 'attribution') {
+    set.seed(5320)
+    # remove points that have been sampled previously
+    lon_lat_data <- lon_lat_data[-unlist(extras),]
+  }
+  samp_pts <- sample(seq(1, nrow(lon_lat_data)), s_size, replace = F)
+  samp_pts <- lon_lat_data[samp_pts, ]
   
   # read in points if you didn't finish
   if (restart == TRUE) {
@@ -187,8 +188,9 @@ classify_points <- function(data_path, img_file, img_data, var_data = NULL, trai
       readline(prompt = 'Press [enter] to continue to image...')
       
       # show satellite image of area to further confirm guess
+      register_google(key = api_key)
       map <- ggmap(get_googlemap(center = c(long, lat), zoom = 19, 
-                                 maptype = 'satellite', key = api_key))
+                                 maptype = 'satellite'))
       plot(map)
       Sys.sleep(2)
       readline(prompt = 'Press [enter] to continue to ts...')

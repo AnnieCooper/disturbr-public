@@ -12,16 +12,16 @@ code_path <- '~/disturbr/code/'
 # adding 50 new sample points to spatial, and then finding proportion sampled and
 # ensuring same sample proportion for temporal (12/14/2018)
 
-img_file <- 'images/p47_r27/summer_ndvi_p47_r27_2000_2016_30m.tif'
-classified_data <- 'image_vars/p47_r27/complete_img_with_attvars_spatial_p47_r27_block7.csv'
-img_data <- 'image_data/p47_r27/data_all_pix_p47_r27_block7.csv'
-training_points <- 'training_points/img_training_attribution_p47_r27_block7.csv'
-det_training_points <-   '/training_points/img_training_p47_r27_block7.csv'
+img_file <- 'images/yellowstone/summer_ndvi_yellowstone_2000_2016_30m.tif'
+classified_data <- 'image_vars/yellowstone/complete_img_with_attvars_spatial_yellowstone_block7_2000_2016.csv'
+img_data <- 'image_data/yellowstone/data_all_pix_yellowstone_2000_2016_block7.csv'
+training_points <- 'training_points/img_training_attribution_yellowstone_block7.csv'
+det_training_points <-   '/training_points/img_training_yellowstone_block7_2000_2016.csv'
 
 # new training name
-temp_training_points <- 'training_points/img_training_temporal_attribution_p47_r27_block7.csv'
+temp_training_points <- 'training_points/img_training_attribution_yellowstone_block7.csv'
 # load temp predictions
-temp_classified_data <- 'image_vars/p47_r27/complete_img_with_attvars_temporal_p47_r27_block7.csv'
+temp_classified_data <- 'image_vars/yellowstone/complete_img_with_attvars_yellowstone_block7.csv'
 
 # load packages -----------------------------------------------------------
 
@@ -37,7 +37,8 @@ source(paste(code_path, 'add_training_pts_func.R', sep = ''))
 # set google api key ------------------------------------------------------
 
 api_key <- #insert as character
-
+register_google(key = api_key)
+  
 # classify detection points --------------------------------------------
 
 # for temporal model, first check how many points overlap with spatial model dataset
@@ -55,12 +56,12 @@ new_training_path <- new_training(data_path = data_path, img_data = img_data,
 # for spatial training, prev_add = TRUE, restart = FALSE, training_points = training_points, var_data = classified_data
 # for temporal training, prev_add = FALSE, restart = TRUE, training_points = new_training_path, var_data = temp_classified_data
 sample_points <- classify_points(data_path = data_path, img_file = img_file,
-                                 var_data = temp_classified_data, img_data = img_data,
-                                 training_points = new_training_path, prev_training = det_training_points,
-                                 type = 'attribution', prev_add = FALSE,
+                                 var_data = classified_data, img_data = img_data,
+                                 training_points = training_points, prev_training = det_training_points,
+                                 type = 'attribution', prev_add = TRUE,
                                  index_name = 'ind', start_yr = 2000, end_yr = 2016,
                                  valid_values = seq(0, 9), sample_num = 50,
-                                 restart = TRUE, start_ind = 1, remove_bad = FALSE)
+                                 restart = FALSE, start_ind = 1, remove_bad = FALSE)
 # re-run:
 
 # codes:

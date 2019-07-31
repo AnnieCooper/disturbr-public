@@ -118,7 +118,7 @@ create_img_data <- function(data_path, img_file, forest_file, out_fill_img, out_
       write.table(img_data_block, paste(data_path, strsplit(out_raw, '[.]')[[1]][1], '_block', block_number, '.csv', sep = ''), sep = ',', row.names = FALSE, col.names = TRUE)
 
       # remove unnecessary objects
-      rm(names, forested, forest_block)
+      rm(names, forest_block)
       gc()
 
       # convert all index (e.g., ndvi) columns to year and index value

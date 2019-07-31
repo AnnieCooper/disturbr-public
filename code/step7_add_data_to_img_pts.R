@@ -19,11 +19,11 @@ sceneid <- as.character(args[1]) # i.e., p47_r27
 
 # names of data files -----------------------------------------------------
 
-all_img_vars <- paste('image_vars/', sceneid, '/complete_img_with_vars_', sceneid, '_block', block, '.csv', sep = '')
-classified_img_data_spat <- paste('detection/', '/classified_img_data_spatial_', sceneid, '_block', block, '.csv', sep = '')
-classified_img_data_temp <- paste('detection/', '/classified_img_data_temporal_', sceneid, '_block', block, '.csv', sep = '')
-output_new_vars_spat <- paste('image_vars/', sceneid, '/complete_img_with_attvars_spatial_', sceneid, '_block', block, '.csv', sep = '')
-output_new_vars_temp <- paste('image_vars/', sceneid, '/complete_img_with_attvars_temporal_', sceneid, '_block', block, '.csv', sep = '')
+all_img_vars <- paste('image_vars/', sceneid, '/complete_img_with_vars_', sceneid, '_block', block, '_2000_2016.csv', sep = '')
+classified_img_data_spat <- paste('detection/', '/classified_img_data_spatial_', sceneid, '_block', block, '_2000_2016.csv', sep = '')
+classified_img_data_temp <- paste('detection/', '/classified_img_data_temporal_', sceneid, '_block', block, '_2000_2016.csv', sep = '')
+output_new_vars_spat <- paste('image_vars/', sceneid, '/complete_img_with_attvars_spatial_', sceneid, '_block', block, '_2000_2016.csv', sep = '')
+output_new_vars_temp <- paste('image_vars/', sceneid, '/complete_img_with_attvars_temporal_', sceneid, '_block', block, '_2000_2016.csv', sep = '')
 
 # load packages -----------------------------------------------------------
 

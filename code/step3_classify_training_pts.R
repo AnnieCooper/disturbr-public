@@ -4,14 +4,14 @@
 
 # set main path -----------------------------------------------------------
 
-data_path <- "/home/annie/Documents/satellite-field-comp/data/"
-code_path <- '/home/annie/Documents/satellite-field-comp/code/final/'
+data_path <- "~/disturbr/data/"
+code_path <- '~/disturbr/code/'
 
 # data names --------------------------------------------------------------
 
-img_file <- 'images/p14_r32/summer_ndvi_p14_r32_2000_2016_30m.tif'
-img_data <- 'image_data/p14_r32/data_all_pix_p14_r32_block7.csv'
-training_points <- 'training/img_training_p14_r32_block7.csv'
+img_file <- 'images/yellowstone/summer_ndvi_yellowstone_2000_2016_30m.tif'
+img_data <- 'image_data/yellowstone/data_all_pix_yellowstone_2000_2016_block5.csv'
+training_points <- 'training_points/img_training_yellowstone_block5_2000_2016.csv'
 
 # load packages -----------------------------------------------------------
 
@@ -55,5 +55,6 @@ api_key <- #insert as character
 sample_points <- classify_points(data_path = data_path, img_file = img_file, img_data = img_data, 
                                  training_points = training_points, type = 'detection',
                                  index_name = 'ind', start_yr = 2000, end_yr = 2016,
-                                 valid_values = seq(0, 9), sample = 200,
-                                  restart = TRUE, start_ind = 154, remove_bad = FALSE)
+                                 valid_values = seq(0, 9), sample_num = 100,
+                                  restart = TRUE, start_ind = 76, remove_bad = FALSE,
+                                 api_key = api_key)

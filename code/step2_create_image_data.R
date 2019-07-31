@@ -19,11 +19,11 @@ idxname <- as.character(args[2])
 
 # data names --------------------------------------------------------------
 
-img_file <- paste('images/', sceneid, '/summer_', idxname, '_', sceneid, '_2000_2016_30m.tif', sep = '')
+img_file <- paste('images/', sceneid, '/summer_', idxname, '_', sceneid, '_1984_2000_30m.tif', sep = '')
 forest_file <- paste('images/', sceneid, '/tree_cover_', sceneid, '_2000_30m.tif', sep = '')
-out_raw <- paste('image_data/', sceneid, '/img_data_uncondensed_', sceneid, '.csv', sep = '')
-index_img_data <- paste('image_data/', sceneid, '/data_all_pix_', sceneid, '.csv', sep = '')
-out_fill_img <- paste('images/', sceneid, '/fill_image_', sceneid, '.tif', sep = '')
+out_raw <- paste('image_data/', sceneid, '/img_data_uncondensed_', sceneid, '_1984_2000.csv', sep = '')
+index_img_data <- paste('image_data/', sceneid, '/data_all_pix_', sceneid, '_1984_2000.csv', sep = '')
+out_fill_img <- paste('images/', sceneid, '/fill_image_', sceneid, '_1984_2000.tif', sep = '')
 
 # load packages -----------------------------------------------------------
 
@@ -42,7 +42,7 @@ create_img_data(data_path = data_path,
                 index_img_data = index_img_data,
                 num_blocks = 9, 
                 plot = FALSE, 
-                start_yr = 2000, 
-                end_yr = 2016, 
+                start_yr = 1984, 
+                end_yr = 2000, 
                 for_cov_min = 20, 
                 index_name = 'ind')

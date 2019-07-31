@@ -19,9 +19,9 @@ sceneid <- as.character(args[1]) # i.e., p47_r27
 
 # names of data files -----------------------------------------------------
 
-ind_img_data <- paste('image_data/', sceneid, '/data_all_pix_', sceneid, '_block', block, '.csv', sep = '')
-raw_img_data <- paste('image_data/', sceneid, '/all_img_data_uncondensed_', sceneid, '_block', block, '.csv', sep = '')
-all_img_vars <- paste('image_vars/', sceneid, '/complete_img_with_vars_', sceneid, '_block', block, '.csv', sep = '')
+ind_img_data <- paste('image_data/', sceneid, '/data_all_pix_', sceneid, '_1984_2000_block', block, '.csv', sep = '')
+raw_img_data <- paste('image_data/', sceneid, '/all_img_data_uncondensed_', sceneid, '_block', block, '_1984_2000.csv', sep = '')
+all_img_vars <- paste('image_vars/', sceneid, '/complete_img_with_vars_', sceneid, '_block', block, '_1984_2000.csv', sep = '')
 
 # load packages -----------------------------------------------------------
 

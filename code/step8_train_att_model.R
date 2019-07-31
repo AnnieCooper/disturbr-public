@@ -12,7 +12,7 @@ output_path <- "~/disturbr/data/"
 
 # should be same number of tasks as scenes
 sceneidx <- as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
-sceneid <- list('p47_r27', 'p45_r30', 'p35_r32', 'p27_r27', 'p12_r28', 'p14_r32', 'p16_r37')[[sceneidx]]
+sceneid <- list('p47_r27', 'p45_r30', 'p35_r32', 'p27_r27', 'p12_r28', 'p14_r32', 'p16_r37', 'yellowstone')[[sceneidx]]
 
 args <- (commandArgs(TRUE))
 training_blocks <- as.character(args[1]) # i.e., "357"
@@ -42,14 +42,16 @@ spatial_results <- attribution_model_setup(training_blocks = training_blocks,
                                            model_type = 'spatial', 
                                            data_path = data_path, 
                                            output_path = output_path, 
-                                           code_path = code_path)
-temporal_results <- attribution_model_setup(training_blocks = training_blocks, 
-                                            n_blocks = n_blocks, 
-                                            sceneid = sceneid,
-                                            model_type = 'temporal', 
-                                            data_path = data_path, 
-                                            output_path = output_path, 
-                                            code_path = code_path)
+                                           code_path = code_path,
+                                           start_year = 2000,
+                                           end_year = 2016)
+#temporal_results <- attribution_model_setup(training_blocks = training_blocks, 
+#                                            n_blocks = n_blocks, 
+#                                            sceneid = sceneid,
+#                                            model_type = 'temporal', 
+#                                            data_path = data_path, 
+#                                            output_path = output_path, 
+#                                            code_path = code_path)
 
 print(paste('Finished with models for scene ', sceneid, '.', sep = ''))
 

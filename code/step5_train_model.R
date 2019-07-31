@@ -12,7 +12,7 @@ output_path <- "~/disturbr/data/"
 
 # should be same number of tasks as scenes
 sceneidx <- as.numeric(Sys.getenv('SLURM_ARRAY_TASK_ID'))
-sceneid <- list('p47_r27', 'p45_r30', 'p35_r32', 'p27_r27', 'p12_r28', 'p14_r32', 'p16_r37')[[sceneidx]]
+sceneid <- list('p47_r27', 'p45_r30', 'p35_r32', 'p27_r27', 'p12_r28', 'p14_r32', 'p16_r37', 'yellowstone')[[sceneidx]]
 
 args <- (commandArgs(TRUE))
 training_blocks <- as.character(args[1]) # i.e., "357"
@@ -23,9 +23,10 @@ n_blocks <- as.numeric(args[2])
 
 # initialize lists
 training_points <- list()
-mod_data_spat <- paste('/importance/detection_model_importance_spatial_', sceneid, '.csv', sep = '')
-mod_data_temp <- paste('/importance/detection_model_importance_temporal_', sceneid, '.csv', sep = '')
+mod_data_spat <- paste('/importance/detection_model_importance_spatial_', sceneid, '_2000_2016.csv', sep = '')
+mod_data_temp <- paste('/importance/detection_model_importance_temporal_', sceneid, '_2000_2016.csv', sep = '')
 all_img_vars <- list()
+all_img_vars_train <- list()
 fill_image <- list()
 output_raster_spat <- list()
 output_raster_temp <- list()
@@ -35,18 +36,19 @@ classified_data_temp <- list()
 i <- 1
 # training file names
 while (i <= length(training_blocks)) {
-  training_points[[i]] <- paste('/training_points/img_training_', sceneid, '_block', training_blocks[i], '.csv', sep = '')
+  training_points[[i]] <- paste('/training_points/img_training_', sceneid, '_block', training_blocks[i], '_2000_2016.csv', sep = '')
   i <- i + 1
 }
 i <- 1
 # all file names
 while (i <= n_blocks) {
-  all_img_vars[[i]] <- paste('complete_img_with_vars_', sceneid, '_block', i, '.csv', sep = '')
-  fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_block', i, '.tif', sep = '')
-  output_raster_spat[[i]] <- paste('/detection/disturbance_date_img_spatial_', sceneid, '_block', i, '.tif', sep = '')
-  classified_data_spat[[i]] <- paste('/detection/classified_img_data_spatial_', sceneid, '_block', i, '.csv', sep = '')
-  output_raster_temp[[i]] <- paste('/detection/disturbance_date_img_temporal_', sceneid, '_block', i, '.tif', sep = '')
-  classified_data_temp[[i]] <- paste('/detection/classified_img_data_temporal_', sceneid, '_block', i, '.csv', sep = '')
+  all_img_vars_train[[i]] <- paste('complete_img_with_vars_', sceneid, '_block', i, '_2000_2016.csv', sep = '')
+  all_img_vars[[i]] <- paste('complete_img_with_vars_', sceneid, '_block', i, '_1984_2000.csv', sep = '')
+  fill_image[[i]] <- paste('images/', sceneid, '/fill_image_', sceneid, '_1984_2000_block', i, '.tif', sep = '')
+  output_raster_spat[[i]] <- paste('/detection/disturbance_date_img_spatial_', sceneid, '_block', i, '_1984_2000.tif', sep = '')
+  classified_data_spat[[i]] <- paste('/detection/classified_img_data_spatial_', sceneid, '_block', i, '_1984_2000.csv', sep = '')
+  output_raster_temp[[i]] <- paste('/detection/disturbance_date_img_temporal_', sceneid, '_block', i, '_1984_2000.tif', sep = '')
+  classified_data_temp[[i]] <- paste('/detection/classified_img_data_temporal_', sceneid, '_block', i, '_1984_2000.csv', sep = '')
   i <- i + 1
 }
 
@@ -89,7 +91,7 @@ while (i <= length(training_blocks)) {
 # variables for all img points (training blocks)
 i <- 1
 while (i <= length(training_blocks)) {
-  temp <- fread(paste(output_path, 'image_vars/', sceneid, '/', all_img_vars[as.numeric(training_blocks[i])], sep = ''))
+  temp <- fread(paste(output_path, 'image_vars/', sceneid, '/', all_img_vars_train[as.numeric(training_blocks[i])], sep = ''))
   temp$longitude <- signif(temp$longitude, digits = 10)
   temp$latitude <- signif(temp$latitude, digits = 10)
   temp <- temp[, splits := NULL]
